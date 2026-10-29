@@ -1,0 +1,5 @@
+# Archivos locales de desarrollo
+database.sqlite
+*.log
+.DS_Store
+Thumbs.db

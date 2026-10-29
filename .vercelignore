@@ -1,0 +1,12 @@
+# Archivos backend PHP (exclusivos para hosting PHP tradicional o servidor local)
+*.php
+*.php.*
+admin/
+
+# Bases de datos y configuraciones locales
+*.sqlite
+*.sql
+*.sql.*
+*.bat
+.htaccess
+*.log

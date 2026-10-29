@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microtech | Repuestos electrónicos y reparaciones</title>
+  <meta name="description" content="Microtech · Venta de recambios electrónicos (móviles, consolas, portátiles) y servicio técnico de reparaciones con pedidos directos por WhatsApp.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* Estilos complementarios para la versión moderna e interactiva */
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mobile-action-btn {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .mobile-action-btn {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: background .2s;
+      }
+      .mobile-action-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+    }
+    .badge-cart {
+      background: #14a6ff;
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .btn-admin {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    .btn-admin:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+    .cat-bar {
+      max-width: 1280px;
+      margin: 14px auto 0;
+      padding: 0 22px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .cat-pill {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    .cat-pill:hover, .cat-pill.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    .view-admin {
+      display: none;
+      max-width: 1280px;
+      margin: 24px auto;
+      padding: 0 22px;
+    }
+    .view-admin.show {
+      display: block;
+    }
+    .view-store.hide {
+      display: none;
+    }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .admin-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    .table-prod {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .table-prod th, .table-prod td {
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    .btn-del {
+      background: #fee;
+      color: #b22;
+      border: 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-del:hover {
+      background: #fdd;
+    }
+    .empty-state {
+      padding: 30px;
+      text-align: center;
+      color: #68788d;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+    .cartrow b {
+      font-size: 14px;
+    }
+    .btn-wa-repair {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabecera principal -->
+  <header>
+    <div class="head">
+      <a href="#store" class="logo" onclick="showStore()">
+        MICRO<span>TECH</span>
+        <div class="tag">REPUESTOS Y REPARACIONES</div>
+      </a>
+
+      <nav class="nav">
+        <div class="drop">
+          <button>Móviles ▾</button>
+          <div class="menu">
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Pantallas', 'Apple')">Pantallas Apple</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Pantallas', 'Samsung')">Pantallas Samsung</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Pantallas', 'Xiaomi')">Pantallas Xiaomi</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Baterías', 'Apple')">Baterías Apple</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Baterías', 'Samsung')">Baterías Samsung</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Móviles', 'Baterías', 'Xiaomi')">Baterías Xiaomi</a>
+          </div>
+        </div>
+
+        <div class="drop">
+          <button>Consolas ▾</button>
+          <div class="menu">
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', 'Joystick', '', 'PS5')">PS5 · Joystick</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', 'Batería', '', 'PS5')">PS5 · Batería</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', 'Metal líquido', '', 'PS5')">PS5 · Metal líquido</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', 'Pasta térmica', '', 'PS5')">PS5 · Pasta térmica</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', 'Setas', '', 'PS5')">PS5 · Setas</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', '', '', 'PS4')">PS4 · Ver piezas</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Consolas', '', '', 'Nintendo Switch')">Nintendo Switch · Ver piezas</a>
+          </div>
+        </div>
+
+        <div class="drop">
+          <button>Portátiles ▾</button>
+          <div class="menu">
+            <a href="javascript:void(0)" onclick="filterCategory('Portátiles', 'Pantallas')">Pantallas</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Portátiles', 'Baterías')">Baterías</a>
+          </div>
+        </div>
+
+        <div class="drop">
+          <button>Accesorios ▾</button>
+          <div class="menu">
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Cargadores')">Cargadores</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Cables')">Cables</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Fundas')">Fundas</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Cristales')">Cristales</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Lámina hidrogel')">Lámina hidrogel</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Auriculares')">Auriculares</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Altavoz')">Altavoz</a>
+            <a href="javascript:void(0)" onclick="filterCategory('Accesorios', 'Cascos')">Cascos</a>
+          </div>
+        </div>
+
+        <a href="#repair-section" onclick="scrollToRepair()">Reparaciones</a>
+        <button class="btn-admin" onclick="toggleAdminView()">⚙️ Panel Admin</button>
+      </nav>
+
+      <div class="top-actions">
+        <button class="mobile-action-btn" type="button" onclick="scrollToRepair()">🔧 Reparar</button>
+        <button class="mobile-action-btn" type="button" onclick="toggleAdminView()">⚙️ Admin</button>
+        <span onclick="scrollToCart()" style="cursor: pointer;" title="Ver carrito">🛒 <span id="cartCountBadge" class="badge-cart">0</span></span>
+      </div>
+    </div>
+
+    <div class="search">
+      <form onsubmit="event.preventDefault(); applyFilter();">
+        <input id="searchInput" placeholder="Buscar repuestos, marcas, modelos o referencias..." oninput="applyFilter()">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- Barra de categorías rápida -->
+  <div class="cat-bar" id="categoryPills"></div>
+
+  <!-- Vista Principal de la Tienda -->
+  <div id="storeView" class="view-store">
+    <main class="wrap">
+      <section class="hero">
+        <h1>RECAMBIOS QUE DEVUELVEN LA VIDA A TU TECNOLOGÍA</h1>
+        <p>Móviles, consolas, portátiles y accesorios. Consulta disponibilidad y realiza tu pedido por WhatsApp.</p>
+      </section>
+
+      <div class="layout">
+        <!-- Listado de Productos -->
+        <section>
+          <p class="muted" id="resultsCount">Cargando catálogo...</p>
+          <div class="products" id="productsGrid"></div>
+        </section>
+
+        <!-- Carrito de Compras -->
+        <aside class="panel cart">
+          <h2>🛒 Tu carrito</h2>
+          <div id="cartItems"><p class="empty">Tu carrito está vacío.</p></div>
+          <div class="total">
+            <span>Total</span>
+            <span id="cartTotal">0,00 €</span>
+          </div>
+          <button id="btnOrderWhatsapp" class="whatsapp" onclick="sendOrderWhatsApp()" disabled>
+            💬 Pedir por WhatsApp
+          </button>
+        </aside>
+      </div>
+
+      <!-- Sección de Solicitud de Reparaciones -->
+      <section id="repair-section" class="formbox" style="margin-top: 36px;">
+        <h1>Solicita una reparación</h1>
+        <p>Completa los datos y te abriremos WhatsApp con la solicitud preparada para darte presupuesto y recogida.</p>
+        <form id="repairForm" class="formgrid" onsubmit="sendRepairWhatsApp(event)">
+          <label>Nombre del cliente<input required name="nombre" placeholder="Tu nombre"></label>
+          <label>Teléfono de contacto<input required type="tel" name="telefono" placeholder="Ej. 600 000 000"></label>
+          <label>Dirección<input required name="direccion" placeholder="Calle, número, piso"></label>
+          <label>Ciudad<input required name="ciudad" placeholder="Ciudad"></label>
+          <label>Código postal<input required name="cp" placeholder="28000"></label>
+          <label>Aparato<input required name="aparato" placeholder="Ej. iPhone 13, PS5, MacBook..."></label>
+          <label class="full">Fallo o servicio solicitado<textarea required name="fallo" placeholder="Describe el fallo con el mayor detalle posible (pantalla rota, no enciende, calentamiento...)"></textarea></label>
+          <button class="primary full" type="submit">Enviar solicitud por WhatsApp</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Vista del Panel de Administración -->
+  <div id="adminView" class="view-admin">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+      <h1>⚙️ Gestión de catálogo y WhatsApp</h1>
+      <button class="primary" onclick="showStore()" style="padding:10px 18px">← Volver a la Tienda</button>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Formulario para agregar producto -->
+      <div class="admin-card">
+        <h2>Añadir Producto</h2>
+        <form id="addProductForm" class="formgrid" onsubmit="addProduct(event)">
+          <label class="full">Nombre del producto<input required id="pName" placeholder="Ej. Pantalla iPhone 14"></label>
+          <label class="full">Referencia<input required id="pRef" placeholder="Ej. IP14-LCD-001"></label>
+          <label>Categoría
+            <select id="pCat" required>
+              <option value="Móviles">Móviles</option>
+              <option value="Consolas">Consolas</option>
+              <option value="Portátiles">Portátiles</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Almacenamiento">Almacenamiento</option>
+              <option value="Componentes">Componentes</option>
+            </select>
+          </label>
+          <label>Subcategoría<input id="pSubcat" placeholder="Pantallas, Baterías..."></label>
+          <label>Dispositivo<input id="pDevice" placeholder="PS5, iPhone 13..."></label>
+          <label>Marca<input id="pBrand" placeholder="Apple, Sony..."></label>
+          <label class="full">Compatibilidad<input id="pCompat" placeholder="Varios modelos"></label>
+          <label>Precio (€)<input required type="number" step="0.01" min="0" id="pPrice" placeholder="29.90"></label>
+          <label>Stock<input required type="number" min="0" id="pStock" value="5"></label>
+          <label class="full">Icono / Emoji<input id="pIcon" value="📦" placeholder="📱, 🎮, 🔋, 📦"></label>
+          <button class="primary full" type="submit">Guardar Producto</button>
+        </form>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid var(--line);">
+
+        <h2>Configuración de WhatsApp</h2>
+        <div style="display:flex; gap: 8px; margin-top: 10px;">
+          <input id="waConfigInput" style="padding: 10px; border: 1px solid var(--line); border-radius: 6px; flex: 1;" value="34624945545">
+          <button class="primary" onclick="saveWhatsAppNumber()">Guardar</button>
+        </div>
+        <p class="muted" style="margin-top: 6px;">Formato internacional sin espacios (ej. 34624945545).</p>
+
+        <div style="margin-top: 24px;">
+          <button class="btn-del" onclick="resetDefaults()" style="width: 100%; padding: 10px;">Restaurar catálogo inicial</button>
+        </div>
+      </div>
+
+      <!-- Tabla de productos actuales -->
+      <div class="admin-card">
+        <h2>Productos en el Catálogo (<span id="adminProdCount">0</span>)</h2>
+        <div class="table-responsive">
+          <table class="table-prod">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Microtech · Repuestos electrónicos y reparaciones · Pedidos y atención por WhatsApp: 
+    <span id="footerWaNumber">+34 624 945 545</span>
+  </footer>
+
+  <script>
+    // Catálogo inicial por defecto
+    const DEFAULT_PRODUCTS = [
+      { id: 1, name: "Pantalla iPhone 13", category: "Móviles", subcategory: "Pantallas", device: "", brand: "Apple", ref: "IP13-LCD-001", compat: "iPhone 13", price: 49.90, stock: 3, icon: "📱", image: "" },
+      { id: 2, name: "Batería iPhone 13", category: "Móviles", subcategory: "Baterías", device: "", brand: "Apple", ref: "IP13-BAT-001", compat: "iPhone 13", price: 24.90, stock: 5, icon: "🔋", image: "" },
+      { id: 3, name: "Pantalla Samsung A32", category: "Móviles", subcategory: "Pantallas", device: "", brand: "Samsung", ref: "SAM-A32-LCD", compat: "Galaxy A32 4G", price: 42.90, stock: 2, icon: "📱", image: "" },
+      { id: 4, name: "Joystick PS5 (módulo)", category: "Consolas", subcategory: "Joystick", device: "PS5", brand: "Sony", ref: "PS5-JOY-001", compat: "DualSense / PS5", price: 12.90, stock: 8, icon: "🎮", image: "" },
+      { id: 5, name: "Pasta térmica para PS5", category: "Consolas", subcategory: "Pasta térmica", device: "PS5", brand: "Sony", ref: "PS5-PT-001", compat: "PS5", price: 8.90, stock: 12, icon: "🧰", image: "" },
+      { id: 6, name: "Joystick Nintendo Switch", category: "Consolas", subcategory: "Joystick", device: "Nintendo Switch", brand: "Nintendo", ref: "NS-JOY-001", compat: "Joy-Con Switch", price: 14.90, stock: 5, icon: "🕹️", image: "" },
+      { id: 7, name: "Pantalla portátil 15.6", category: "Portátiles", subcategory: "Pantallas", device: "", brand: "", ref: "LCD15-001", compat: "Varios modelos", price: 89.90, stock: 7, icon: "💻", image: "" },
+      { id: 8, name: "Batería portátil universal", category: "Portátiles", subcategory: "Baterías", device: "", brand: "", ref: "BAT-UNI-001", compat: "Varios modelos", price: 54.90, stock: 6, icon: "🔋", image: "" },
+      { id: 9, name: "Cargador USB-C 20W", category: "Accesorios", subcategory: "Cargadores", device: "", brand: "", ref: "USBC-20W-001", compat: "Dispositivos USB-C", price: 14.90, stock: 10, icon: "🔌", image: "" },
+      { id: 10, name: "Cámara trasera iPhone 13", category: "Móviles", subcategory: "Cámaras", device: "", brand: "Apple", ref: "IP13-CAM-001", compat: "iPhone 13", price: 39.90, stock: 4, icon: "📷", image: "" },
+      { id: 11, name: "SSD M.2 1TB", category: "Almacenamiento", subcategory: "Discos", device: "", brand: "", ref: "SSD-1TB-001", compat: "PCIe 3.0/4.0", price: 79.90, stock: 10, icon: "💾", image: "" },
+      { id: 12, name: "Conector USB-C (repuesto)", category: "Componentes", subcategory: "Conectores", device: "", brand: "", ref: "USB-C-001", compat: "Microelectrónica", price: 3.90, stock: 25, icon: "🔧", image: "" }
+    ];
+
+    // Estado local con recuperación segura
+    let products = DEFAULT_PRODUCTS;
+    try {
+      const saved = localStorage.getItem('microtech_products');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          products = parsed;
+        }
+      }
+    } catch (err) {
+      console.warn('Error leyendo catálogo local:', err);
+    }
+
+    let whatsappNumber = localStorage.getItem('microtech_wa') || '34624945545';
+    let currentCategory = 'Todas';
+    let currentSubcategory = '';
+    let currentBrand = '';
+    let currentDevice = '';
+    const cart = new Map();
+
+    function persistProducts() {
+      try {
+        localStorage.setItem('microtech_products', JSON.stringify(products));
+      } catch (err) {
+        console.error('Error guardando en localStorage:', err);
+      }
+    }
+
+    function initCategoryPills() {
+      const cats = ['Todas', ...new Set(products.map(p => p.category).filter(Boolean))];
+      const html = cats.map(c => `
+        <button type="button" class="cat-pill ${c === currentCategory ? 'active' : ''}" onclick="selectCategory('${c.replace(/'/g, "\\'")}')">
+          ${c === 'Todas' ? '📦 Todos los repuestos' : c}
+        </button>
+      `).join('');
+      const container = document.getElementById('categoryPills');
+      if (container) container.innerHTML = html;
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      currentSubcategory = '';
+      currentBrand = '';
+      currentDevice = '';
+      showStore();
+      initCategoryPills();
+      applyFilter();
+    }
+
+    function filterCategory(cat, sub = '', brand = '', device = '') {
+      currentCategory = cat;
+      currentSubcategory = sub;
+      currentBrand = brand;
+      currentDevice = device;
+      showStore();
+      initCategoryPills();
+      applyFilter();
+    }
+
+    function applyFilter() {
+      const input = document.getElementById('searchInput');
+      const query = (input ? input.value : '').toLowerCase().trim();
+      const filtered = products.filter(p => {
+        if (currentCategory !== 'Todas' && p.category !== currentCategory) return false;
+        if (currentSubcategory && (p.subcategory || '').toLowerCase() !== currentSubcategory.toLowerCase()) return false;
+        if (currentBrand && (p.brand || '').toLowerCase() !== currentBrand.toLowerCase()) return false;
+        if (currentDevice && (p.device || '').toLowerCase() !== currentDevice.toLowerCase()) return false;
+        if (query) {
+          const match = `${p.name || ''} ${p.ref || ''} ${p.compat || ''} ${p.brand || ''} ${p.device || ''} ${p.subcategory || ''} ${p.category || ''}`.toLowerCase();
+          if (!match.includes(query)) return false;
+        }
+        return true;
+      });
+
+      renderProducts(filtered);
+    }
+
+    function renderProducts(list) {
+      const countEl = document.getElementById('resultsCount');
+      const grid = document.getElementById('productsGrid');
+
+      if (countEl) countEl.textContent = `${list.length} producto(s) encontrado(s)`;
+
+      if (!grid) return;
+
+      if (!list.length) {
+        grid.innerHTML = '<div class="empty-state full" style="grid-column: 1/-1;">No encontramos productos con ese filtro. Prueba otra búsqueda o categoría.</div>';
+        return;
+      }
+
+      grid.innerHTML = list.map(p => `
+        <article class="card">
+          <div class="image">
+            ${p.image ? `<img src="${p.image}" alt="${p.name}">` : `<span>${p.icon || '📦'}</span>`}
+          </div>
+          <h2>${p.name}</h2>
+          <div class="muted">${p.brand ? p.brand + ' · ' : ''}${p.compat || p.device || ''}</div>
+          <div class="muted">Ref. ${p.ref}</div>
+          <div class="stock">● ${Number(p.stock) > 0 ? `En stock: ${p.stock} uds.` : 'Consultar disponibilidad'}</div>
+          <div class="price">${Number(p.price || 0).toFixed(2).replace('.', ',')} €</div>
+          <button type="button" class="buy" onclick="addToCart('${p.id}')">Añadir al carrito</button>
+        </article>
+      `).join('');
+    }
+
+    // Carrito
+    function addToCart(id) {
+      const p = products.find(x => String(x.id) === String(id));
+      if (!p) return;
+      const key = String(id);
+      const current = cart.get(key)?.qty || 0;
+      if (current < Number(p.stock)) {
+        cart.set(key, { ...p, qty: current + 1 });
+      } else {
+        alert(`Has alcanzado el límite de stock disponible (${p.stock} uds).`);
+      }
+      renderCart();
+    }
+
+    function updateCartQty(id, delta) {
+      const key = String(id);
+      const item = cart.get(key);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart.delete(key);
+      } else {
+        cart.set(key, item);
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      let total = 0;
+      let totalItems = 0;
+      let rows = '';
+
+      cart.forEach((item, key) => {
+        const itemTotal = Number(item.price || 0) * item.qty;
+        total += itemTotal;
+        totalItems += item.qty;
+        rows += `
+          <div class="cartrow">
+            <b>${item.name}</b><br>
+            <span>${Number(item.price || 0).toFixed(2).replace('.', ',')} € × ${item.qty}</span>
+            <div class="qty">
+              <button type="button" onclick="updateCartQty('${key}', -1)">−</button>
+              <span>${item.qty}</span>
+              <button type="button" onclick="updateCartQty('${key}', 1)">+</button>
+              <button type="button" class="remove" onclick="updateCartQty('${key}', -${item.qty})">Eliminar</button>
+            </div>
+          </div>
+        `;
+      });
+
+      const itemsEl = document.getElementById('cartItems');
+      if (itemsEl) itemsEl.innerHTML = rows || '<p class="empty">Tu carrito está vacío.</p>';
+      const totalEl = document.getElementById('cartTotal');
+      if (totalEl) totalEl.textContent = Number(total || 0).toFixed(2).replace('.', ',') + ' €';
+      const badgeEl = document.getElementById('cartCountBadge');
+      if (badgeEl) badgeEl.textContent = totalItems;
+      const btnOrder = document.getElementById('btnOrderWhatsapp');
+      if (btnOrder) btnOrder.disabled = !cart.size;
+    }
+
+    function openWhatsApp(url) {
+      const win = window.open(url, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = url;
+      }
+    }
+
+    function sendOrderWhatsApp() {
+      if (!cart.size) return;
+      let lines = ['Hola Microtech, quiero realizar este pedido:', ''];
+      let total = 0;
+
+      cart.forEach(item => {
+        const itemSubtotal = Number(item.price || 0) * item.qty;
+        lines.push(`• ${item.name} | Ref. ${item.ref} | Cantidad: ${item.qty} | Subtotal: ${itemSubtotal.toFixed(2).replace('.', ',')} €`);
+        total += itemSubtotal;
+      });
+
+      lines.push('', `Total orientativo: ${Number(total || 0).toFixed(2).replace('.', ',')} €`, '', 'Quedo pendiente de confirmar disponibilidad, envío y forma de pago.');
+
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+      openWhatsApp(url);
+    }
+
+    // Reparaciones
+    function sendRepairWhatsApp(e) {
+      e.preventDefault();
+      const form = e.target;
+      const d = new FormData(form);
+      const lines = [
+        'Hola Microtech, solicito una reparación:',
+        '',
+        'Nombre: ' + (d.get('nombre') || ''),
+        'Teléfono: ' + (d.get('telefono') || ''),
+        'Dirección: ' + (d.get('direccion') || ''),
+        'Ciudad: ' + (d.get('ciudad') || ''),
+        'Código postal: ' + (d.get('cp') || ''),
+        'Aparato: ' + (d.get('aparato') || ''),
+        'Fallo: ' + (d.get('fallo') || '')
+      ];
+
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+      openWhatsApp(url);
+    }
+
+    function scrollToRepair() {
+      showStore();
+      const el = document.getElementById('repair-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToCart() {
+      showStore();
+      const el = document.querySelector('.cart');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Panel de Administración
+    function toggleAdminView() {
+      const store = document.getElementById('storeView');
+      const admin = document.getElementById('adminView');
+      if (!store || !admin) return;
+      const isShowingAdmin = admin.classList.contains('show');
+
+      if (isShowingAdmin) {
+        showStore();
+      } else {
+        store.classList.add('hide');
+        admin.classList.add('show');
+        renderAdmin();
+      }
+    }
+
+    function showStore() {
+      const store = document.getElementById('storeView');
+      const admin = document.getElementById('adminView');
+      if (store) store.classList.remove('hide');
+      if (admin) admin.classList.remove('show');
+    }
+
+    function renderAdmin() {
+      const countEl = document.getElementById('adminProdCount');
+      if (countEl) countEl.textContent = products.length;
+      const waInput = document.getElementById('waConfigInput');
+      if (waInput) waInput.value = whatsappNumber;
+
+      const tbody = document.getElementById('adminProductsTable');
+      if (!tbody) return;
+      tbody.innerHTML = products.map(p => `
+        <tr>
+          <td>
+            <strong>${p.name}</strong><br>
+            <span class="muted">Ref: ${p.ref} · ${p.compat || p.device}</span>
+          </td>
+          <td>${p.category} / ${p.subcategory || '-'}</td>
+          <td>${Number(p.price || 0).toFixed(2).replace('.', ',')} €</td>
+          <td>${p.stock}</td>
+          <td>
+            <button type="button" class="btn-del" onclick="deleteProduct('${p.id}')">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function addProduct(e) {
+      e.preventDefault();
+      const newProd = {
+        id: Date.now(),
+        name: document.getElementById('pName').value.trim(),
+        ref: document.getElementById('pRef').value.trim(),
+        category: document.getElementById('pCat').value,
+        subcategory: document.getElementById('pSubcat').value.trim(),
+        device: document.getElementById('pDevice').value.trim(),
+        brand: document.getElementById('pBrand').value.trim(),
+        compat: document.getElementById('pCompat').value.trim(),
+        price: parseFloat(document.getElementById('pPrice').value) || 0,
+        stock: parseInt(document.getElementById('pStock').value, 10) || 0,
+        icon: document.getElementById('pIcon').value.trim() || '📦',
+        image: ''
+      };
+
+      products.unshift(newProd);
+      persistProducts();
+      e.target.reset();
+      renderAdmin();
+      initCategoryPills();
+      applyFilter();
+      alert('Producto añadido correctamente.');
+    }
+
+    function deleteProduct(id) {
+      if (confirm('¿Seguro que deseas eliminar este producto?')) {
+        products = products.filter(p => String(p.id) !== String(id));
+        persistProducts();
+        renderAdmin();
+        initCategoryPills();
+        applyFilter();
+      }
+    }
+
+    function saveWhatsAppNumber() {
+      const input = document.getElementById('waConfigInput');
+      const val = (input ? input.value : '').replace(/\D/g, '');
+      if (val.length < 9) {
+        alert('Introduce un número de teléfono válido.');
+        return;
+      }
+      whatsappNumber = val;
+      localStorage.setItem('microtech_wa', val);
+      const footerWa = document.getElementById('footerWaNumber');
+      if (footerWa) footerWa.textContent = '+' + val;
+      alert('Número de WhatsApp actualizado.');
+    }
+
+    function resetDefaults() {
+      if (confirm('¿Restablecer todo el catálogo original de repuestos?')) {
+        products = [...DEFAULT_PRODUCTS];
+        persistProducts();
+        renderAdmin();
+        initCategoryPills();
+        applyFilter();
+        alert('Catálogo restablecido.');
+      }
+    }
+
+    // Inicialización y sincronización
+    if (document.getElementById('footerWaNumber')) {
+      document.getElementById('footerWaNumber').textContent = '+' + whatsappNumber;
+    }
+    initCategoryPills();
+    applyFilter();
+    renderCart();
+  </script>
+</body>
+</html>
